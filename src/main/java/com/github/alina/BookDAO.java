@@ -37,5 +37,17 @@ public class BookDAO {
             }
             return null;
         }
+    public void updateBook(int id, Book book) {
+        try (Connection connection = DBCconnection.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("UPDATE books SET name = ?, category = ?, price = ? WHERE id = ?");
+            ps.setString(2,book.getTitle());
+            ps.setString(3, book.getAuthor());
+            ps.setDouble(4, book.getPrice());
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     }
 
