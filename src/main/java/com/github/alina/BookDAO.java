@@ -20,27 +20,28 @@ public class BookDAO {
         return bookList;
     }
 
-        public Book getBook(int id) {
-            try (Connection connection = DBCconnection.getConnection()) {
-                PreparedStatement stm = connection.prepareStatement("SELECT * FROM books WHERE id = ?");
-                stm.setInt(1, id);
-                ResultSet rs = stm.executeQuery();
-                if (rs.next()) {
-                    return new Book(
-                            rs.getInt("id"),
-                            rs.getString("title"),
-                            rs.getString("author"),
-                            rs.getDouble("price"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public Book getBook(int id) {
+        try (Connection connection = DBCconnection.getConnection()) {
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM books WHERE id = ?");
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return new Book(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getDouble("price"));
             }
-            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return null;
+    }
+
     public void updateBook(int id, Book book) {
         try (Connection connection = DBCconnection.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("UPDATE books SET name = ?, category = ?, price = ? WHERE id = ?");
-            ps.setString(2,book.getTitle());
+            ps.setString(2, book.getTitle());
             ps.setString(3, book.getAuthor());
             ps.setDouble(4, book.getPrice());
             ps.setInt(1, id);
@@ -49,5 +50,15 @@ public class BookDAO {
             e.printStackTrace();
         }
     }
+
+    public void deleteBook(int id) {
+        try (Connection connection = DBCconnection.getConnection()) {
+            PreparedStatement stm = connection.prepareStatement("DELETE FROM books WHERE id = ?");
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+}
 
