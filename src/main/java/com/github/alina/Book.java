@@ -10,8 +10,19 @@ public class Book {
     private double price;
     private int quantity;
 
+    public Book() {
+
+    }
+
     public Book(int id, String title, Author author, double price, int quantity) {
         this.id = id;
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Book(String title, Author author, double price, int quantity) {
         this.title = title;
         this.author = author;
         this.price = price;
