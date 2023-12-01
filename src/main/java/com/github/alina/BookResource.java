@@ -6,36 +6,36 @@ import java.util.List;
 
 @Path("/books")
 public class BookResource {
-    BookDAO personDAO = new BookDAO();
+    BookDAO bookDAO = new BookDAO();
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Book> getBooks(){
-        return personDAO.getAlBook();
+        return bookDAO.getAlBook();
     }
 
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Book getBook(@PathParam("id") int id){
-        return personDAO.getBook(id);
+        return bookDAO.getBook(id);
     }
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
-    public Book updateProduct(@PathParam("id") int id,Book book) {
-        personDAO.updateBook(id, book);
+    public Book updateBook(@PathParam("id") int id,Book book) {
+        bookDAO.updateBook(id, book);
         return book;
     }
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void addBook( Book book) {
-        personDAO.addBook(book);
+        bookDAO.addBook(book);
     }
 
     @DELETE
     @Path("/{id}")
     public void deleteBook(@PathParam("id") int id) {
-        personDAO.deleteBook(id);
+        bookDAO.deleteBook(id);
     }
 }

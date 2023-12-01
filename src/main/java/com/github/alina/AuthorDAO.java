@@ -1,9 +1,9 @@
 package com.github.alina;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,4 +22,48 @@ public class AuthorDAO {
         }
         return authorlist;
     }
+    public Author getAuthor(int id) {
+        try (Connection connection = DBCconnection.getConnection()) {
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM authors WHERE id = ?");
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return new Author(
+                        rs.getInt("id"),
+                        rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public void addAuthor(Author author) {
+        try (Connection connection =DBCconnection.getConnection()) {
+            PreparedStatement stm = connection.prepareStatement("INSERT INTO authors(name ) VALUES(?) ");
+            stm.setString(1, author.getName());
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateAuthor(int id, Author author) {
+        try (Connection connection = DBCconnection.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement("UPDATE authors SET name = ? WHERE id = ?");
+            ps.setString(2, author.getName());
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteAuthor(int id) {
+        try (Connection connection = DBCconnection.getConnection()) {
+            PreparedStatement stm = connection.prepareStatement("DELETE FROM authors WHERE id = ?");
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
