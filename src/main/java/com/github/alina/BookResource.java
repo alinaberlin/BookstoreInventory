@@ -1,9 +1,6 @@
 package com.github.alina;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -21,6 +18,14 @@ public class BookResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Book getBook(@PathParam("id") int id){
         return personDAO.getBook(id);
+    }
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON})
+    public Book updateProduct(@PathParam("id") int id,Book book) {
+        personDAO.updateBook(id, book);
+        return book;
     }
 
 }
