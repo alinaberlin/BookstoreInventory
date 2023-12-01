@@ -17,14 +17,21 @@ public class BookResource {
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Book getBook(@PathParam("id") int id){
-        return bookDAO.getBook(id);
+        Book book = bookDAO.getBook(id);
+        if(book==null){
+            throw new NotFoundException();
+        }
+        return book;
+
     }
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public Book updateBook(@PathParam("id") int id,Book book) {
-        bookDAO.updateBook(id, book);
+        if(bookDAO.updateBook(id, book)==0){
+            throw new NotFoundException();
+        };
         return book;
     }
     @POST

@@ -27,7 +27,7 @@ public class BookDAO {
         try (Connection connection = DBCconnection.getConnection()) {
             PreparedStatement stm = connection.prepareStatement("SELECT b.id as bookId, b.title as title, b.price as price, b.quantity as quantity, " +
                     "a.id as authorId, a.name as name" +
-                            " FROM books b INNER JOIN authors a on a.id=b.author_id WHERE id = ?");
+                            " FROM books b INNER JOIN authors a on a.id=b.author_id WHERE b.id = ?");
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
@@ -59,17 +59,19 @@ public class BookDAO {
             e.printStackTrace();
         }
     }
-    public void updateBook(int id, Book book) {
+    public int updateBook(int id, Book book) {
         try (Connection connection = DBCconnection.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("UPDATE books SET title = ?, author_Id = ?, price = ? WHERE id = ?");
             ps.setString(2, book.getTitle());
             ps.setInt(3, book.getAuthor().getId());
             ps.setDouble(4, book.getPrice());
             ps.setInt(1, id);
-            ps.executeUpdate();
+            int result = ps.executeUpdate();
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     public void deleteBook(int id) {
