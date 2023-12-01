@@ -27,5 +27,15 @@ public class BookResource {
         personDAO.updateBook(id, book);
         return book;
     }
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void addBook( Book book) {
+        personDAO.addBook(book);
+    }
 
+    @DELETE
+    @Path("/{id}")
+    public void deleteBook(@PathParam("id") int id) {
+        personDAO.deleteBook(id);
+    }
 }

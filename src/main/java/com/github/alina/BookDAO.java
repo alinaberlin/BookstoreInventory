@@ -37,7 +37,18 @@ public class BookDAO {
         }
         return null;
     }
+    public void addBook(Book book) {
+        try (Connection connection =DBCconnection.getConnection()) {
+            PreparedStatement stm = connection.prepareStatement("INSERT INTO persons(name, about, birthYear ) VALUES(?, ?, ?) ");
+            stm.setString(1, book.getTitle());
+            stm.setString(2, book.getAuthor());
+            stm.setDouble(3, book.getPrice());
+            stm.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public void updateBook(int id, Book book) {
         try (Connection connection = DBCconnection.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("UPDATE books SET name = ?, category = ?, price = ? WHERE id = ?");
