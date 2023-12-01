@@ -9,9 +9,9 @@ public class BookDAO {
         List<Book> bookList = new ArrayList<>();
         try (Connection connection = DBCconnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM persons");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM books");
             while (rs.next()) {
-                Book book = new Book(rs.getInt("id"), rs.getString("title"), rs.getString("author"), rs.getDouble("price"));
+                Book book = new Book(rs.getInt("id"), rs.getString("title"), rs.getString("author"), rs.getDouble("price"), rs.getInt("quantity"));
                 bookList.add(book);
             }
         } catch (SQLException e) {
@@ -30,8 +30,10 @@ public class BookDAO {
                         rs.getInt("id"),
                         rs.getString("title"),
                         rs.getString("author"),
-                        rs.getDouble("price"));
+                        rs.getDouble("price"),
+                        rs.getInt("quantity"));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,10 +41,11 @@ public class BookDAO {
     }
     public void addBook(Book book) {
         try (Connection connection =DBCconnection.getConnection()) {
-            PreparedStatement stm = connection.prepareStatement("INSERT INTO persons(name, about, birthYear ) VALUES(?, ?, ?) ");
+            PreparedStatement stm = connection.prepareStatement("INSERT INTO books(title, author, price, quantity ) VALUES(?, ?, ?, ?) ");
             stm.setString(1, book.getTitle());
             stm.setString(2, book.getAuthor());
             stm.setDouble(3, book.getPrice());
+            stm.setInt(4, book.getQuantity());
             stm.executeUpdate();
 
         } catch (SQLException e) {
@@ -51,7 +54,7 @@ public class BookDAO {
     }
     public void updateBook(int id, Book book) {
         try (Connection connection = DBCconnection.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("UPDATE books SET name = ?, category = ?, price = ? WHERE id = ?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE books SET title = ?, author = ?, price = ? WHERE id = ?");
             ps.setString(2, book.getTitle());
             ps.setString(3, book.getAuthor());
             ps.setDouble(4, book.getPrice());

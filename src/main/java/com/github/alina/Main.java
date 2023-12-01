@@ -14,12 +14,6 @@ public class Main {
         ResourceConfig resourceConfig = new ResourceConfig(BookResource.class);
         GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
         //add connection for server
-        System.out.println("Server started at: " + BASE_URI);
-        try {
-            DBCconnection.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
